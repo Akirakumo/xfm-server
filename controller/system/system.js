@@ -1,5 +1,7 @@
+import os from 'os'
+
 // 获取系统信息
-app.get('/sysInfo', (req, res) => {
+app.get('/system/info', (req, res) => {
 
     // console.log('CPUS： ' + os.cpus());
 
@@ -19,14 +21,18 @@ app.get('/sysInfo', (req, res) => {
 
     // console.log('空闲内存：' + (os.freemem() / 1024 / 1024 / 1024).toFixed(1) + 'G');
 
-    res.send({
-        hostname: os.hostname(),
-        cpus: os.cpus(),
-        arch: os.arch(),
-        os: os.platform(),
-        totalmem: (os.totalmem() / 1024 / 1024 / 1024).toFixed(1),
-        freemem: (os.freemem() / 1024 / 1024 / 1024).toFixed(1),
-        network: os.networkInterfaces()
+    res.json({
+        rtnCode: 0,
+        msg: 'OK',
+        data: {
+            hostname: os.hostname(),
+            cpus: os.cpus(),
+            arch: os.arch(),
+            os: os.platform(),
+            totalmem: (os.totalmem() / 1024 / 1024 / 1024).toFixed(1),
+            freemem: (os.freemem() / 1024 / 1024 / 1024).toFixed(1),
+            network: os.networkInterfaces()
+        }
     });
 })
 
