@@ -11,7 +11,31 @@ import osUtils from "os-utils"
 // console.log('系统总内存量： ' + (os.totalmem() / 1024 / 1024 / 1024).toFixed(1) + 'G')
 // console.log('空闲内存：' + (os.freemem() / 1024 / 1024 / 1024).toFixed(1) + 'G');
 
-const getSysInfo = () => {
+const hostname = os.hostname()
+const cpu = os.cpus()[0].model
+const core = os.availableParallelism()
+const system = os.version()
+const machine = os.machine()
+const network = os.networkInterfaces()
+const time = os.uptime()
+const mem = `${(os.totalmem() / 1024 ** 3).toFixed(2)} G`
+const networks = [];
+Object.entries(network).forEach(([key, value]) => value.forEach(item => item.internal || networks.push(item)))
+
+export const getSysInfo = () => {
+    return {
+        hostname,
+        cpu,
+        core,
+        system,
+        machine,
+        networks,
+        time,
+        mem
+    }
+}
+
+export const getSysUseInfo = () => {
     let cpuUsage = 0
     osUtils.cpuUsage(value => cpuUsage = value)
     const freeMem = (os.freemem() / 1024 / 1024 / 1024).toFixed(2)
@@ -24,6 +48,3 @@ const getSysInfo = () => {
         memUsage: (totalMem - freeMem) / totalMem * 100.0,
     }
 }
-
-export default getSysInfo
-

@@ -1,7 +1,7 @@
 'use strict'
 
 import errorCode from '../../errorCode/index.js'
-import getSysInfo from '../../utils/getSysInfo.js'
+import { getSysInfo } from '../../utils/getSysInfo.js'
 
 class System {
     constructor() {
