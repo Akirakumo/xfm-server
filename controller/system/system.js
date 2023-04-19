@@ -1,7 +1,7 @@
 'use strict'
 
 import errorCode from '../../errorCode/index.js'
-import { getSysInfo } from '../../utils/getSysInfo.js'
+import { getSysInfo, getSysUsage } from '../../utils/getSysInfo.js'
 
 class System {
     constructor() {
@@ -9,6 +9,14 @@ class System {
     }
     async info(req, res, next) {
         const data = getSysInfo()
+        res.send({
+            rtnCode: errorCode.SUCCES,
+            msg: 'OK',
+            data
+        })
+    }
+    async usage(req, res, next) {
+        const data = getSysUsage()
         res.send({
             rtnCode: errorCode.SUCCES,
             msg: 'OK',

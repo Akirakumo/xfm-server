@@ -1,5 +1,6 @@
 import os from 'os'
-import osUtils from "os-utils"
+import osUtils from 'os-utils'
+import diskinfo from 'diskinfo'
 
 // console.log('CPUS： ' + os.cpus());
 // console.log('获取计算机名称： ' + os.hostname());
@@ -19,8 +20,19 @@ const machine = os.machine()
 const network = os.networkInterfaces()
 const time = os.uptime()
 const mem = `${(os.totalmem() / 1024 ** 3).toFixed(2)} G`
-const networks = [];
+const networks = []
 Object.entries(network).forEach(([key, value]) => value.forEach(item => item.internal || networks.push(item)))
+let driveList = []
+diskinfo.getDrives((err, drives) => {
+    driveList = drives.map(item => {
+        item.blocks = parseInt(item.blocks / 1024 ** 3) + 'G'
+        item.used = parseInt(item.used / 1024 ** 3) + 'G'
+        item.available = parseInt(item.available / 1024 ** 3) + 'G'
+        return item
+    })
+})
+let cpuUsage = 0
+
 
 export const getSysInfo = () => {
     return {
@@ -31,17 +43,19 @@ export const getSysInfo = () => {
         machine,
         networks,
         time,
-        mem
+        mem,
+        driveList
     }
 }
 
-export const getSysUseInfo = () => {
-    let cpuUsage = 0
-    osUtils.cpuUsage(value => cpuUsage = value)
+export const getSysUsage = () => {
+    osUtils.cpuUsage(value => {
+        cpuUsage = (value * 100).toFixed(2)
+    })
     const freeMem = (os.freemem() / 1024 / 1024 / 1024).toFixed(2)
     const totalMem = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2)
     return {
-        cpuUsage: (cpuUsage * 100.0).toFixed(2),
+        cpuUsage,
         freeMem,
         totalMem,
         usedMem: totalMem - freeMem,
