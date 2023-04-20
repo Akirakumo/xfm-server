@@ -34,7 +34,7 @@ diskinfo.getDrives((err, drives) => {
 let cpuUsage = 0
 
 
-export const getSysInfo = () => {
+const getSysInfo = () => {
     return {
         hostname,
         cpu,
@@ -48,7 +48,7 @@ export const getSysInfo = () => {
     }
 }
 
-export const getSysUsage = () => {
+const getSysUsage = () => {
     osUtils.cpuUsage(value => {
         cpuUsage = (value * 100).toFixed(2)
     })
@@ -61,4 +61,15 @@ export const getSysUsage = () => {
         usedMem: totalMem - freeMem,
         memUsage: (totalMem - freeMem) / totalMem * 100.0,
     }
+}
+
+const getSysTime = () => {
+    const time = new Date().toLocaleString()
+    return time
+}
+
+export {
+    getSysInfo,
+    getSysUsage,
+    getSysTime
 }

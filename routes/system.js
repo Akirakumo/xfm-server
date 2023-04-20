@@ -6,5 +6,6 @@ const router = express.Router()
 
 router.get('/info', System.info)
 router.get('/usage', System.usage)
+router.get('/time', System.time)
 
 export default router

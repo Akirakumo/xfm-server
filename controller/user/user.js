@@ -11,7 +11,7 @@ class User {
             rtnCode: errorCode.SUCCES,
             msg: 'OK',
             data: {
-
+                token: 1
             }
         })
     }
